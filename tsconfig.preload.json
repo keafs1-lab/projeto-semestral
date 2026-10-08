@@ -1,0 +1,1 @@
+{"compilerOptions":{"target":"ES2022","module":"CommonJS","moduleResolution":"Node","outDir":"dist/preload","rootDir":"src/preload","strict":true,"esModuleInterop":true,"skipLibCheck":true,"types":["node"]},"include":["src/preload/**/*.ts"]}

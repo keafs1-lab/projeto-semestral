@@ -1,0 +1,61 @@
+{
+  "name": "bestand",
+  "version": "1.1.0",
+  "description": "Bestand - sistema desktop de gerenciamento de estoque",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "dev": "concurrently -k \"npm:dev:renderer\" \"npm:dev:main\"",
+    "dev:renderer": "vite --host 127.0.0.1",
+    "dev:main": "wait-on http://127.0.0.1:5173 && tsc -p tsconfig.main.json && tsc -p tsconfig.preload.json && electron . --dev",
+    "build": "npm run build:renderer && npm run build:main",
+    "build:renderer": "vite build",
+    "build:main": "tsc -p tsconfig.main.json && tsc -p tsconfig.preload.json",
+    "start": "electron .",
+    "typecheck": "tsc -p tsconfig.main.json --noEmit && tsc -p tsconfig.preload.json --noEmit && tsc -p tsconfig.renderer.json --noEmit",
+    "test": "vitest run",
+    "verify": "npm run typecheck && npm run build && npm test",
+    "check-node": "node -e \"const v=process.versions.node; if(v!=='22.23.3'){console.error('Bestand exige Node.js 22.23.3. Detectado: '+v); process.exit(1)} console.log('Node.js 22.23.3 OK')\"",
+    "package:linux": "npm run verify && electron-builder --linux AppImage deb",
+    "package:dir": "npm run verify && electron-builder --dir"
+  },
+  "dependencies": {
+    "chart.js": "4.5.0",
+    "jspdf": "4.2.1",
+    "sql.js": "1.13.0",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.21",
+    "@types/sql.js": "1.4.9",
+    "concurrently": "9.1.2",
+    "electron": "39.8.10",
+    "typescript": "5.8.3",
+    "vite": "6.4.3",
+    "vitest": "3.2.7",
+    "wait-on": "8.0.3",
+    "electron-builder": "26.0.12"
+  },
+  "engines": {
+    "node": "22.23.3"
+  },
+  "build": {
+    "appId": "br.com.bestand.estoque",
+    "productName": "Bestand",
+    "asar": true,
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Office"
+    },
+    "artifactName": "Bestand-${version}-${os}-${arch}.${ext}"
+  }
+}
